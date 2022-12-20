@@ -6,7 +6,7 @@ const bodyParser = require('./body');
 const PORT = 8000;
 
 const routing = {
-    user: db('users'),
+    user: db('users', ['id', 'login']),
 };
 
 const crud = {
