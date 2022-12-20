@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
+const hash = require('./hash');
 const { Pool } = require('pg');
 
 const PORT = 8000;
@@ -27,12 +28,13 @@ app.get('/user', (req, res) => {
     });
 });
 
-app.post('/user', (req, res) => {
+app.post('/user', async (req, res) => {
     const { login, password } = req.body;
     const user = JSON.stringify({ login, password });
     console.log(`${req.socket.remoteAddress} POST /user ${user}`);
     const sql = 'INSERT INTO users (login, password) VALUES ($1, $2) RETURNING id';
-    pool.query(sql, [login, password], (err, data) => {
+    const passwordHash = await hash(password);
+    pool.query(sql, [login, passwordHash], (err, data) => {
         if (err) throw err;
         res.status(201).json({ created: data.rows });
     });
@@ -48,13 +50,14 @@ app.get('/user/:id', (req, res) => {
     });
 });
 
-app.put('/user/:id', (req, res) => {
+app.put('/user/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     const { login, password } = req.body;
     const user = JSON.stringify({ login, password });
     console.log(`${req.socket.remoteAddress} PUT /user/${id} ${user}`);
     const sql = 'UPDATE users SET login = $1, password = $2 WHERE id = $3 RETURNING id';
-    pool.query(sql, [login, password, id], (err, data) => {
+    const passwordHash = await hash(password);
+    pool.query(sql, [login, passwordHash, id], (err, data) => {
         if (err) throw err;
         res.status(201).json({ modified: data.rows });
     });
