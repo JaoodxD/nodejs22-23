@@ -5,21 +5,12 @@ const express = require('express')();
 const db = require('./db');
 const bodyParser = require('./body');
 
-const PORT = 8000;
-
-const routing = {
-    user: db('users', ['id', 'login']),
+const PORT = {
+    EXPRESS: 8000,
+    FASTIFY: 8001,
+    HTTP: 8002
 };
 
-const crud = {
-    get: 'read',
-    post: 'create',
-    put: 'update',
-    delete: 'delete'
-};
-// fastify.get('/user', async (req, res) => {
-//     return (await routing.user.read({})).rows;
-// });
 const options = {
     schema: {
         response: {
@@ -37,16 +28,16 @@ const options = {
 fastify.get('/', options, async (request, reply) => {
     reply.send({ hello: 'world' });
 });
-fastify.listen({ port: 8000 });
+fastify.listen({ port: PORT.FASTIFY });
 
 http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ hello: 'world' }));
-}).listen(8001);
+}).listen(PORT.HTTP);
 
 express.get('/', async (req, res) => {
     res.json({ hello: 'world' });
-}).listen(8002);
+}).listen(PORT.EXPRESS);
 /* http.createServer(async (req, res) => {
     const { method, url, socket } = req;
     const [name, id] = url.substring(1).split('/');
