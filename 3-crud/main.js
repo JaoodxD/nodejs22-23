@@ -1,20 +1,29 @@
 'use strict';
 const http = require('node:http');
 const db = require('./db');
+const bodyParser = require('./body');
+
+const PORT = 8000;
 
 const routing = {
     user: db('users'),
-}
+};
 
-const bodyParser = require('./body');
-const PORT = 8000;
+const crud = {
+    get: 'read',
+    post: 'create',
+    put: 'update',
+    delete: 'delete'
+};
 
 http.createServer(async (req, res) => {
     const { method, url, socket } = req;
     const [name, id] = url.substring(1).split('/');
     const entity = routing[name];
-    if (!entity) return res.end('Not found');
-    const handler = entity[method.toLowerCase()];
+    if (!entity) return res.end('Not found1');
+    const procedure = crud[method.toLowerCase()];
+    const handler = entity[procedure];
+    console.log({ method, procedure, handler });
     if (!handler) return res.end('Not found');
 
     const args = {

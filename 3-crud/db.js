@@ -10,17 +10,17 @@ const pool = new Pool({
 });
 
 module.exports = (table) => ({
-    get: async ({ id }) => {
+    read: async ({ id }) => {
         if (!id) return pool.query(`SELECT id, login FROM ${table}`);
         const sql = `SELECT id, login FROM ${table} WHERE id = $1`;
         return pool.query(sql, [id]);
     },
-    post: async ({ login, password }) => {
+    create: async ({ login, password }) => {
         const sql = `INSERT INTO ${table} (login, password) VALUES ($1, $2) RETURNING id`;
         const passwordHash = await hash(password);
         return pool.query(sql, [login, passwordHash]);
     },
-    put: async ({ id, login, password }) => {
+    update: async ({ id, login, password }) => {
         const sql = `UPDATE ${table} SET login = $1, password = $2 WHERE id = $3 RETURNING id`;
         const passwordHash = await hash(password);
         return pool.query(sql, [login, passwordHash, id]);
