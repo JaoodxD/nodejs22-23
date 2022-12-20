@@ -38,26 +38,5 @@ http.createServer(async (req, res) => {
 express.get('/', async (req, res) => {
     res.json({ hello: 'world' });
 }).listen(PORT.EXPRESS);
-/* http.createServer(async (req, res) => {
-    const { method, url, socket } = req;
-    const [name, id] = url.substring(1).split('/');
-    const entity = routing[name];
-    if (!entity) return res.end('Not found1');
-    const procedure = crud[method.toLowerCase()];
-    const handler = entity[procedure];
-    // console.log({ method, procedure, handler });
-    if (!handler) return res.end('Not found');
-
-    const args = {
-        id,
-        ... await bodyParser(req)
-    };
-    // console.log(`${socket.remoteAddress} ${method} ${url}`);
-    const result = await handler(args);
-    res.writeHead(200, {
-        'content-type': 'application/json'
-    })
-    res.end(JSON.stringify(result.rows));
-}).listen(PORT); */
 
 console.log(`Listening on port ${PORT}...`);
