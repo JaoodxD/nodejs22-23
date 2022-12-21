@@ -9,14 +9,6 @@ const PORT = {
     HTTP: 8002
 };
 
-//express server
-express.get('/', async (req, res) => {
-    res.json({ hello: 'world' });
-}).listen(PORT.EXPRESS);
-fastify.get('/', options, async (request, reply) => {
-    reply.send({ hello: 'world' });
-});
-
 //fastify options
 const options = {
     schema: {
@@ -32,8 +24,16 @@ const options = {
         }
     }
 };
+
+//express server
+express.get('/', async (req, res) => {
+    res.json({ hello: 'world' });
+}).listen(PORT.EXPRESS);
+
 //fastify server
-fastify.listen({ port: PORT.FASTIFY });
+fastify.get('/', options, async (request, reply) => {
+    reply.send({ hello: 'world' });
+}).listen({ port: PORT.FASTIFY, host: '0.0.0.0' });
 
 //http server
 http.createServer(async (req, res) => {
@@ -41,4 +41,4 @@ http.createServer(async (req, res) => {
         .end(JSON.stringify({ hello: 'world' }));
 }).listen(PORT.HTTP);
 
-console.log(`Listening on port ${PORT}...`);
+console.log(`Listening on port ${PORT.toString()}...`);
