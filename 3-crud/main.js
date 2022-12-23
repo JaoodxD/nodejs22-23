@@ -23,7 +23,6 @@ http.createServer(async (req, res) => {
     if (!entity) return res.end('Not found1');
     const procedure = crud[method.toLowerCase()];
     const handler = entity[procedure];
-    console.log({ method, procedure, handler });
     if (!handler) return res.end('Not found');
 
     const args = {
@@ -37,5 +36,6 @@ http.createServer(async (req, res) => {
     })
     res.end(JSON.stringify(result.rows));
 }).listen(PORT);
+
 
 console.log(`Listening on port ${PORT}...`);
