@@ -6,7 +6,9 @@ const bodyParser = require('./body');
 const PORT = 8000;
 
 const routing = {
-    user: db('users', ['id', 'login']),
+    user: require('./user'),
+    country: db('country'),
+    city: db('city'),
 };
 
 const crud = {
@@ -20,7 +22,7 @@ http.createServer(async (req, res) => {
     const { method, url, socket } = req;
     const [name, id] = url.substring(1).split('/');
     const entity = routing[name];
-    if (!entity) return res.end('Not found1');
+    if (!entity) return res.end('Not found');
     const procedure = crud[method.toLowerCase()];
     const handler = entity[procedure];
     if (!handler) return res.end('Not found');
@@ -34,7 +36,7 @@ http.createServer(async (req, res) => {
     res.writeHead(200, {
         'content-type': 'application/json'
     })
-    res.end(JSON.stringify(result.rows));
+    res.end(JSON.stringify(result.rows, null, '\t'));
 }).listen(PORT);
 
 
