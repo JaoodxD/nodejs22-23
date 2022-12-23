@@ -1,6 +1,6 @@
 'use strict';
 const express = require('express')();
-const fastify = require('fastify')({ logger: false });
+const fastify = require('fastify').default({ logger: false });
 const http = require('node:http');
 
 const PORT = {
