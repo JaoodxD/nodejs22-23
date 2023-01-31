@@ -15,7 +15,7 @@ module.exports = ({
 
     async update({ id, login, password }) {
         const hashedPassword = await hash(password);
-        return users.update({ id, login, password });
+        return users.update({ id, login, password: hashedPassword });
     }
 
 });
