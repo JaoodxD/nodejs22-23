@@ -32,7 +32,7 @@ express.get('/', async (req, res) => {
 
 //fastify server
 fastify.get('/', options, async (request, reply) => {
-    reply.send({ hello: 'world' });
+    return ({ hello: 'world' });
 }).listen({ port: PORT.FASTIFY, host: '0.0.0.0' });
 
 //http server
