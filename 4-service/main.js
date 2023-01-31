@@ -26,7 +26,6 @@ http.createServer(async (req, res) => {
     const procedure = crud[method.toLowerCase()];
     const handler = entity[procedure];
     if (!handler) return res.end('Not found');
-
     const args = {
         id,
         ... await bodyParser(req)
