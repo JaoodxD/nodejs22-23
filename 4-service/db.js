@@ -17,7 +17,7 @@ module.exports = (table, permittedFields = ['*']) => ({
     read: async ({ id, fields = permittedFields }) => {
         const names = fields.join(', ');
         if (!id) return pool.query(`SELECT ${names} FROM ${table}`);
-        const sql = `SELECT id, login FROM ${table} WHERE id = $1`;
+        const sql = `SELECT ${names} FROM ${table} WHERE id = $1`;
         return pool.query(sql, [id]);
     },
 
