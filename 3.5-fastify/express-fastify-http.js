@@ -41,4 +41,4 @@ http.createServer(async (req, res) => {
         .end(JSON.stringify({ hello: 'world' }));
 }).listen(PORT.HTTP);
 
-console.log(`Listening on port ${PORT.toString()}...`);
+console.log(`Listening on ports: ${JSON.stringify(PORT)}`);
